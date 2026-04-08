@@ -146,8 +146,8 @@ high_val = st.number_input("High")
 low_val = st.number_input("Low")
 vol_val = st.number_input("Volume")
 change_val = st.number_input("Change %")
-lag1_val = st.number_input("Lag 1")
-lag2_val = st.number_input("Lag 2")
+lag1_val = st.number_input("Harga Emas Kemarin (USD)")
+lag2_val = st.number_input("Harga Emas 2 Hari Lalu (USD)")
 
 if st.button("Prediksi Harga"):
     input_data = np.array([[open_val, high_val, low_val, vol_val, change_val, lag1_val, lag2_val]])

@@ -130,6 +130,7 @@ st.metric("R2 Score", f"{r2:.4f}")
 st.subheader("📉 Actual vs Predicted")
 
 chart_data = pd.DataFrame({
+    'Date': df['Date'][train_size:],
     'Actual': y_test.values,
     'Predicted': y_pred
 })

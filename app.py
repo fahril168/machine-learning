@@ -118,7 +118,7 @@ mae = mean_absolute_error(y_test, y_pred)
 r2 = r2_score(y_test, y_pred)
 
 st.subheader("📊 Hasil Evaluasi")
-st.write(f"Split Data: {int(split_ratio*100)}:{int((1-split_ratio)*100)}")
+st.write(f"Split Data: {round(split_ratio*100)}:{round((1-split_ratio)*100)}")
 st.write(f"Model: {model_choice}")
 
 st.metric("MAE", f"{mae:.2f}")

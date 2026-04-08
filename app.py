@@ -127,13 +127,16 @@ st.metric("R2 Score", f"{r2:.4f}")
 # =========================
 # VISUALISASI
 # =========================
-st.subheader("📉 Actual vs Predicted")
-
 chart_data = pd.DataFrame({
-    'Date': df['Date'][train_size:],
-    'Actual': y_test.values,
+    'Actual': y_test,
     'Predicted': y_pred
 })
+
+# ambil tanggal sesuai index y_test
+chart_data['Date'] = df.loc[y_test.index, 'Date']
+
+# jadikan index
+chart_data.set_index('Date', inplace=True)
 
 st.line_chart(chart_data)
 

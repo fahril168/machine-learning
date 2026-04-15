@@ -158,4 +158,4 @@ if st.button("Prediksi Harga"):
     input_scaled = scaler.transform(input_data)
     prediction = model.predict(input_scaled)
 
-    st.success(f"Prediksi Harga Emas: {prediction[0]:.2f} USD")
+    st.success(f"Prediksi Harga Emas: {prediction[0]:.2f} USD per Ons")

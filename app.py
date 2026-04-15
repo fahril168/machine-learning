@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import joblib
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
@@ -132,10 +131,7 @@ chart_data = pd.DataFrame({
     'Predicted': y_pred
 })
 
-# ambil tanggal sesuai index y_test
 chart_data['Date'] = df.loc[y_test.index, 'Date']
-
-# jadikan index
 chart_data.set_index('Date', inplace=True)
 
 st.line_chart(chart_data)
@@ -145,42 +141,33 @@ st.line_chart(chart_data)
 # =========================
 st.subheader("🔮 Prediksi Manual")
 
-open_val = st.number_input("Open")
-high_val = st.number_input("High")
-low_val = st.number_input("Low")
-vol_val = st.number_input("Volume")
-change_val = st.number_input("Change %")
-lag1_val = st.number_input("Harga Emas Kemarin (USD)")
-lag2_val = st.number_input("Harga Emas 2 Hari Lalu (USD)")
+open_val = st.number_input("Open", key="open")
+high_val = st.number_input("High", key="high")
+low_val = st.number_input("Low", key="low")
+vol_val = st.number_input("Volume", key="volume")
+change_val = st.number_input("Change %", key="change")
+lag1_val = st.number_input("Harga Emas Kemarin (USD)", key="lag1")
+lag2_val = st.number_input("Harga Emas 2 Hari Lalu (USD)", key="lag2")
 
+# tombol prediksi
 if st.button("Prediksi Harga"):
     input_data = np.array([[open_val, high_val, low_val, vol_val, change_val, lag1_val, lag2_val]])
     input_scaled = scaler.transform(input_data)
     prediction = model.predict(input_scaled)
 
-    # simpan ke session_state
     st.session_state.prediction = prediction[0]
 
-    st.success(f"Prediksi Harga Emas: {prediction[0]:.2f} USD per Ons")
-    # =========================
-    # KONVERSI KE RUPIAH / GRAM
-    # =========================
-    kurs = st.number_input("Masukkan Kurs USD ke Rupiah", value=15500)
-    
-    harga_usd_per_ons = prediction[0]
-    harga_idr_per_gram = (harga_usd_per_ons * kurs) / 31.1035
-    
-    st.subheader("💰 Konversi ke Rupiah")
-    st.write(f"Kurs USD ke IDR: Rp {kurs:,}")
-    st.success(f"Harga Emas per Gram: Rp {harga_idr_per_gram:,.0f}")
-
+# =========================
+# HASIL PREDIKSI + KONVERSI
+# =========================
 if "prediction" in st.session_state:
     st.success(f"Prediksi Harga Emas: {st.session_state.prediction:.2f} USD per Ons")
 
-    # =========================
-    # KONVERSI KE RUPIAH / GRAM
-    # =========================
-    kurs = st.number_input("Masukkan Kurs USD ke Rupiah", value=15500)
+    kurs = st.number_input(
+        "Masukkan Kurs USD ke Rupiah",
+        value=15500,
+        key="kurs_input"
+    )
 
     harga_usd_per_ons = st.session_state.prediction
     harga_idr_per_gram = (harga_usd_per_ons * kurs) / 31.1035

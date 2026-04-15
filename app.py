@@ -158,6 +158,9 @@ if st.button("Prediksi Harga"):
     input_scaled = scaler.transform(input_data)
     prediction = model.predict(input_scaled)
 
+    # simpan ke session_state
+    st.session_state.prediction = prediction[0]
+
     st.success(f"Prediksi Harga Emas: {prediction[0]:.2f} USD per Ons")
     # =========================
     # KONVERSI KE RUPIAH / GRAM
@@ -167,6 +170,21 @@ if st.button("Prediksi Harga"):
     harga_usd_per_ons = prediction[0]
     harga_idr_per_gram = (harga_usd_per_ons * kurs) / 31.1035
     
+    st.subheader("💰 Konversi ke Rupiah")
+    st.write(f"Kurs USD ke IDR: Rp {kurs:,}")
+    st.success(f"Harga Emas per Gram: Rp {harga_idr_per_gram:,.0f}")
+
+if "prediction" in st.session_state:
+    st.success(f"Prediksi Harga Emas: {st.session_state.prediction:.2f} USD per Ons")
+
+    # =========================
+    # KONVERSI KE RUPIAH / GRAM
+    # =========================
+    kurs = st.number_input("Masukkan Kurs USD ke Rupiah", value=15500)
+
+    harga_usd_per_ons = st.session_state.prediction
+    harga_idr_per_gram = (harga_usd_per_ons * kurs) / 31.1035
+
     st.subheader("💰 Konversi ke Rupiah")
     st.write(f"Kurs USD ke IDR: Rp {kurs:,}")
     st.success(f"Harga Emas per Gram: Rp {harga_idr_per_gram:,.0f}")
